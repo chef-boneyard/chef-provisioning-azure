@@ -27,6 +27,7 @@ machine_options = {
       :location => 'West US'
     },
     #:image_id => 'foobar'
+    # Until SSH keys are supported (soon)
     :password => "chefm3t4l\\m/"
 }
 
@@ -35,7 +36,8 @@ machine 'toad' do
 end
 ```
  
-That's it. No images, nothing else. Do not expect much just yet. 
+That's it. No images, nothing else. Do not expect much just yet. Currently you have to specify the 
+password you want the initial user to have in your recipe. No, this will not be for very long. 
 
 ### Setting your credentials
 
