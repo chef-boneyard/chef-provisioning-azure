@@ -250,9 +250,11 @@ module ChefMetalAzure
         if action_handler.should_perform_actions
           action_handler.report_progress "waiting for #{machine_spec.name} (#{driver_url}) to be ready ..."
           while time_elapsed < 120 && vm.status != 'ReadyRole'
-            action_handler.report_progress "been waiting #{time_elapsed}/#{max_wait_time} -- sleeping #{sleep_time} seconds for #{machine_spec.name} (#{vm.id} on #{driver_url}) to be ready ..."
+            action_handler.report_progress "been waiting #{time_elapsed}/#{max_wait_time} -- sleeping #{sleep_time} seconds for #{machine_spec.name} (#{driver_url}) to be ready ..."
             sleep(sleep_time)
             time_elapsed += sleep_time
+            # Azure caches results
+            vm = vm_for(machine_spec)
           end
           action_handler.report_progress "#{machine_spec.name} is now ready"
         end
@@ -267,11 +269,13 @@ module ChefMetalAzure
       transport = transport_for(machine_spec, machine_options, vm)
       unless transport.available?
         if action_handler.should_perform_actions
-          action_handler.report_progress "waiting for #{machine_spec.name} (#{vm.id} on #{driver_url}) to be connectable (transport up and running) ..."
+          action_handler.report_progress "waiting for #{machine_spec.name} (#{driver_url}) to be connectable (transport up and running) ..."
           while time_elapsed < 120 && !transport.available?
             action_handler.report_progress "been waiting #{time_elapsed}/#{max_wait_time} -- sleeping #{sleep_time} seconds for #{machine_spec.name} (#{vm.id} on #{driver_url}) to be connectable ..."
             sleep(sleep_time)
             time_elapsed += sleep_time
+            # Azure caches results
+            vm = vm_for(machine_spec)
           end
 
           action_handler.report_progress "#{machine_spec.name} is now connectable"
