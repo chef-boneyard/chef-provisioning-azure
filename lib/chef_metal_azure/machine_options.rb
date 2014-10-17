@@ -1,7 +1,10 @@
 require 'chef_metal/machine_options'
 require 'chef_metal_azure/constants'
 
+# Chef Metal Azure driver
 module ChefMetalAzure
+  # Represents available machine provisioning options for Azure
+  # These are used to tell Azure how to construct a new VM
   class MachineOptions < ChefMetal::MachineOptions
     # @return [String] Storage account name.
     attr_accessor :storage_account_name
@@ -16,7 +19,8 @@ module ChefMetalAzure
     # @return [String] Deployment name.
     attr_accessor :deployment_name
 
-    # @return [Array] Array of ports to enable, can be in +port+ or +src:dest+ format.
+    # @return [Array] Array of ports to enable.
+    # Can be in +port+ or +src:dest+ format.
     attr_accessor :tcp_endpoints
 
     # @return [Pathname] Path to the private key.
@@ -45,8 +49,8 @@ module ChefMetalAzure
     attr_accessor :availability_set_name
 
     def initialize
-      #set default values
-      self.winrm_transport = "http"
+      # Set defaults
+      self.winrm_transport = 'http'
       self.ssh_port = 22
     end
 

@@ -1,4 +1,7 @@
 module ChefMetalAzure
+  # Represents available options when bootstrapping a host on Azure
+  # These are used to tell Azure some initial pieces of information
+  # for building a new VM.
   class BootstrapOptions < ChefMetal::BootstrapOptions
     # @return [String] The name of the VM
     attr_accessor :vm_name

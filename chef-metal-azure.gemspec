@@ -1,11 +1,11 @@
-$:.unshift(File.dirname(__FILE__) + '/lib')
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'chef_metal_azure/version'
 
 Gem::Specification.new do |s|
   s.name = 'chef-metal-azure'
   s.version = ChefMetalAzure::VERSION
   s.platform = Gem::Platform::RUBY
-  s.extra_rdoc_files = ['README.md', 'LICENSE' ]
+  s.extra_rdoc_files = %w(README.md LICENSE)
   s.summary = 'Provisioner for creating Azure things in Chef Metal.'
   s.description = s.summary
   s.author = 'John Ewart'
@@ -20,9 +20,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'yard'
 
-  s.bindir       = "bin"
+  s.bindir       = 'bin'
   s.executables  = %w( )
 
   s.require_path = 'lib'
-  s.files = %w(Rakefile LICENSE README.md) + Dir.glob("{distro,lib,tasks,spec}/**/*", File::FNM_DOTMATCH).reject {|f| File.directory?(f) }
+  s.files = %w(Rakefile LICENSE README.md)
+  s.files += Dir.glob('{distro,lib,tasks,spec}/**/*', File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
 end

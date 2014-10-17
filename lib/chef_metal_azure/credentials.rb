@@ -3,9 +3,8 @@ require 'inifile'
 module ChefMetalAzure
   # Reads in a credentials file from a config file and presents them
   class Credentials
-    
-    AZURE_CONFIG_PATH = "#{ENV['HOME']}/.azure/config"
-    
+    CONFIG_PATH = "#{ENV['HOME']}/.azure/config"
+
     def initialize
       @credentials = {}
       load_default
@@ -15,9 +14,10 @@ module ChefMetalAzure
 
     def default
       if @credentials.size == 0
-        raise "No credentials loaded!  Do you have a #{AZURE_CONFIG_PATH}?"
+        fail "No credentials loaded! Do you have a #{CONFIG_PATH}?"
       end
-      @credentials[ENV['AZURE_DEFAULT_PROFILE'] || 'default'] || @credentials.first[1]
+      default_key = ENV['AZURE_DEFAULT_PROFILE'] || 'default'
+      @credentials[default_key] || @credentials.first[1]
     end
 
     def keys
@@ -52,13 +52,10 @@ module ChefMetalAzure
         end
       end
     end
-
     
     def load_default
-      config_file = ENV['AZURE_CONFIG_FILE'] || File.expand_path(AZURE_CONFIG_PATH)
-      if File.file?(config_file)
-        load_ini(config_file)
-      end
+      config_file = ENV['AZURE_CONFIG_FILE'] || File.expand_path(CONFIG_PATH)
+      load_ini(config_file) if File.file?(config_file)
     end
 
     def self.method_missing(name, *args, &block)
