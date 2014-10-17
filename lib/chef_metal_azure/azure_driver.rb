@@ -117,8 +117,8 @@ module ChefMetalAzure
         raise "Machine #{machine_spec.name} does not have a VM associated with it, or the VM does not exist."
       end
 
-      # TODO: Not convinced this is the right thing to check
-      if vm.deployment_status != 'Running'
+      # TODO: Not sure if this is the right thing to check
+      if vm.status != 'ReadyRole'
         action_handler.report_progress "Readying #{machine_spec.name} in #{machine_spec.location['location']}..."
         wait_until_ready(action_handler, machine_spec)
         wait_for_transport(action_handler, machine_spec, machine_options)
@@ -246,10 +246,10 @@ module ChefMetalAzure
       time_elapsed = 0
       sleep_time = 10
       max_wait_time = 120
-      unless vm.deployment_status == 'Running'
+      unless vm.status == 'ReadyRole'
         if action_handler.should_perform_actions
           action_handler.report_progress "waiting for #{machine_spec.name} (#{driver_url}) to be ready ..."
-          while time_elapsed < 120 && vm.deployment_status != 'Running'
+          while time_elapsed < 120 && vm.status != 'ReadyRole'
             action_handler.report_progress "been waiting #{time_elapsed}/#{max_wait_time} -- sleeping #{sleep_time} seconds for #{machine_spec.name} (#{vm.id} on #{driver_url}) to be ready ..."
             sleep(sleep_time)
             time_elapsed += sleep_time
