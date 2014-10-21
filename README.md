@@ -1,3 +1,5 @@
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/opscode/chef-metal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # chef-metal-azure
 
 Implementation of an Azure driver that relies on the Azure SDK. 
