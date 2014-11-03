@@ -1,6 +1,8 @@
 require 'inifile'
 
-module ChefMetalAzure
+class Chef
+module Provisioning
+module AzureDriver
   # Reads in a credentials file from a config file and presents them
   class Credentials
     CONFIG_PATH = "#{ENV['HOME']}/.azure/config"
@@ -52,7 +54,7 @@ module ChefMetalAzure
         end
       end
     end
-    
+
     def load_default
       config_file = ENV['AZURE_CONFIG_FILE'] || File.expand_path(CONFIG_PATH)
       load_ini(config_file) if File.file?(config_file)
@@ -66,4 +68,6 @@ module ChefMetalAzure
       @azure_credentials ||= Credentials.new
     end
   end
+end
+end
 end

@@ -1,4 +1,6 @@
-module ChefMetalAzure
+class Chef
+module Provisioning
+module AzureDriver
   # A collection of useful Azure-specific constants
   class Constants
     # Constants around transport mechanisms available
@@ -27,4 +29,6 @@ module ChefMetalAzure
       BASIC_A4 = 'Basic_A4'
     end
   end
+end
+end
 end
