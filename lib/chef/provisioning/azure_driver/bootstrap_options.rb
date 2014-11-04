@@ -1,8 +1,10 @@
-module ChefMetalAzure
+class Chef
+module Provisioning
+module AzureDriver
   # Represents available options when bootstrapping a host on Azure
   # These are used to tell Azure some initial pieces of information
   # for building a new VM.
-  class BootstrapOptions < ChefMetal::BootstrapOptions
+  class BootstrapOptions < Chef::Provisioning::BootstrapOptions
     # @return [String] The name of the VM
     attr_accessor :vm_name
 
@@ -18,4 +20,6 @@ module ChefMetalAzure
     # @return [String] The Azure location to store this in
     attr_accessor :location
   end
+end
+end
 end

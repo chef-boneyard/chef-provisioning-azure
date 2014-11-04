@@ -1,6 +1,6 @@
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/opscode/chef-metal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/opscode/chef-provisioning?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# chef-metal-azure
+# chef-provisioning-azure
 
 Implementation of an Azure driver that relies on the Azure SDK. 
 
@@ -18,13 +18,13 @@ At least not yet, you have been warned :grin:
 It can provision and converge a host on Azure with a recipe like the following:
 
 ```ruby
-require 'chef_metal_azure'
+require 'chef/provisioning/azure_driver'
 with_driver 'azure'
 
 machine_options = {
     :bootstrap_options => {
-      :cloud_service_name => 'chefmetal',
-      :storage_account_name => 'chefmetal',
+      :cloud_service_name => 'chefprovisioning',
+      :storage_account_name => 'chefprovisioning',
       #:vm_size => "A7"
       :location => 'West US'
     },

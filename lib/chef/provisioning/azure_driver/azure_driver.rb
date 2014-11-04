@@ -1,31 +1,33 @@
 require 'chef/mixin/shell_out'
-require 'chef_metal/driver'
-require 'chef_metal/convergence_strategy/install_cached'
-require 'chef_metal/convergence_strategy/install_sh'
-require 'chef_metal/convergence_strategy/no_converge'
-require 'chef_metal/transport/ssh'
-require 'chef_metal/machine/windows_machine'
-require 'chef_metal/machine/unix_machine'
-require 'chef_metal/machine_spec'
+require 'chef/provisioning/driver'
+require 'chef/provisioning/convergence_strategy/install_cached'
+require 'chef/provisioning/convergence_strategy/install_sh'
+require 'chef/provisioning/convergence_strategy/no_converge'
+require 'chef/provisioning/transport/ssh'
+require 'chef/provisioning/machine/windows_machine'
+require 'chef/provisioning/machine/unix_machine'
+require 'chef/provisioning/machine_spec'
 
-require 'chef_metal_azure/version'
-require 'chef_metal_azure/credentials'
+require 'chef/provisioning/azure_driver/version'
+require 'chef/provisioning/azure_driver/credentials'
 
 require 'yaml'
 require 'azure'
 
-module ChefMetalAzure
+class Chef
+module Provisioning
+module AzureDriver
   # Provisions machines using the Azure SDK
-  class AzureDriver < ChefMetal::Driver
+  class Driver < Chef::Provisioning::Driver
     attr_reader :region
 
     # Construct an AzureDriver object from a URL - used to parse existing URL
     # data to hydrate a driver object.
     # URL scheme:
     # azure:account_id:region
-    # @return [AzureDriver] A chef-metal Azure driver object for the given URL
+    # @return [AzureDriver] A chef-provisioning Azure driver object for the given URL
     def self.from_url(driver_url, config)
-      AzureDriver.new(driver_url, config)
+      Driver.new(driver_url, config)
     end
 
     def initialize(driver_url, config)
@@ -53,7 +55,7 @@ module ChefMetalAzure
     # Allocate a new machine with the Azure API and start it up, without
     # blocking to wait for it. Creates any needed resources to get a machine
     # up and running.
-    # @param (see ChefMetal::Driver#allocate_machine)
+    # @param (see Chef::Provisioning::Driver#allocate_machine)
     def allocate_machine(action_handler, machine_spec, machine_options)
       existing_vm = vm_for(machine_spec)
 
@@ -62,15 +64,15 @@ module ChefMetalAzure
 
       bootstrap_options = machine_options[:bootstrap_options] || {}
       bootstrap_options[:vm_size] ||= 'Small'
-      bootstrap_options[:cloud_service_name] ||= 'chefmetal'
-      bootstrap_options[:storage_account_name] ||=  'chefmetal'
+      bootstrap_options[:cloud_service_name] ||= 'chefprovisioning'
+      bootstrap_options[:storage_account_name] ||=  'chefprovisioning'
       bootstrap_options[:location] ||=  'West US'
 
       location = bootstrap_options[:location]
 
       machine_spec.location = {
         'driver_url' => driver_url,
-        'driver_version' => ChefMetalAzure::VERSION,
+        'driver_version' => Chef::Provisioning::AzureDriver::VERSION,
         'allocated_at' => Time.now.utc.to_s,
         'host_node' => action_handler.host_node,
         'image_id' => machine_options[:image_id],
@@ -98,7 +100,7 @@ module ChefMetalAzure
 
     end
 
-    # (see ChefMetal::Driver#ready_machine)
+    # (see Chef::Provisioning::Driver#ready_machine)
     def ready_machine(action_handler, machine_spec, machine_options)
       vm = vm_for(machine_spec)
       location = machine_spec.location['location']
@@ -119,7 +121,7 @@ module ChefMetalAzure
       machine_for(machine_spec, machine_options, vm)
     end
 
-    # (see ChefMetal::Driver#destroy_machine)
+    # (see Chef::Provisioning::Driver#destroy_machine)
     def destroy_machine(action_handler, machine_spec, machine_options)
       vm = vm_for(machine_spec)
       vm_name = machine_spec.name
@@ -148,9 +150,9 @@ module ChefMetalAzure
       convergence_strategy = convergence_strategy_for(machine_spec, machine_options)
 
       if machine_spec.location['is_windows']
-        ChefMetal::Machine::WindowsMachine.new(machine_spec, transport, convergence_strategy)
+        Chef::Provisioning::Machine::WindowsMachine.new(machine_spec, transport, convergence_strategy)
       else
-        ChefMetal::Machine::UnixMachine.new(machine_spec, transport, convergence_strategy)
+        Chef::Provisioning::Machine::UnixMachine.new(machine_spec, transport, convergence_strategy)
       end
     end
 
@@ -220,22 +222,22 @@ module ChefMetalAzure
       options[:ssh_pty_enable] = true
       options[:ssh_gateway] ||= machine_spec.location['ssh_gateway']
 
-      ChefMetal::Transport::SSH.new(remote_host, username, ssh_options, options, config)
+      Chef::Provisioning::Transport::SSH.new(remote_host, username, ssh_options, options, config)
     end
 
     def convergence_strategy_for(machine_spec, machine_options)
       convergence_options = machine_options[:convergence_options]
       # Defaults
       unless machine_spec.location
-        return ChefMetal::ConvergenceStrategy::NoConverge.new(convergence_options, config)
+        return Chef::Provisioning::ConvergenceStrategy::NoConverge.new(convergence_options, config)
       end
 
       if machine_spec.location['is_windows']
-        ChefMetal::ConvergenceStrategy::InstallMsi.new(convergence_options, config)
+        Chef::Provisioning::ConvergenceStrategy::InstallMsi.new(convergence_options, config)
       elsif machine_options[:cached_installer]
-        ChefMetal::ConvergenceStrategy::InstallCached.new(convergence_options, config)
+        Chef::Provisioning::ConvergenceStrategy::InstallCached.new(convergence_options, config)
       else
-        ChefMetal::ConvergenceStrategy::InstallSh.new(convergence_options, config)
+        Chef::Provisioning::ConvergenceStrategy::InstallSh.new(convergence_options, config)
       end
     end
 
@@ -284,4 +286,6 @@ module ChefMetalAzure
     end
 
   end
+end
+end
 end

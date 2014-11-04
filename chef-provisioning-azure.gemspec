@@ -1,19 +1,19 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
-require 'chef_metal_azure/version'
+require 'chef/provisioning/azure_driver/version'
 
 Gem::Specification.new do |s|
-  s.name = 'chef-metal-azure'
-  s.version = ChefMetalAzure::VERSION
+  s.name = 'chef-provisioning-azure'
+  s.version = Chef::Provisioning::AzureDriver::VERSION
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = %w(README.md LICENSE)
   s.summary = 'Provisioner for creating Azure things in Chef Metal.'
   s.description = s.summary
   s.author = 'John Ewart'
   s.email = 'jewart@getchef.com'
-  s.homepage = 'https://github.com/opscode/chef-metal-azure'
+  s.homepage = 'https://github.com/opscode/chef-provisioning-azure'
 
   s.add_dependency 'chef'
-  s.add_dependency 'chef-metal', '~> 0.9'
+  s.add_dependency 'chef-provisioning', '~> 0.9'
   s.add_dependency 'azure'
 
   s.add_development_dependency 'rspec'

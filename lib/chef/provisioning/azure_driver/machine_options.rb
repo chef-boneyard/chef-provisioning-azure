@@ -1,11 +1,13 @@
-require 'chef_metal/machine_options'
-require 'chef_metal_azure/constants'
+require 'chef/provisioning/machine_options'
+require 'chef/provisioning/azure_driver/constants'
 
 # Chef Metal Azure driver
-module ChefMetalAzure
+class Chef
+module Provisioning
+module AzureDriver
   # Represents available machine provisioning options for Azure
   # These are used to tell Azure how to construct a new VM
-  class MachineOptions < ChefMetal::MachineOptions
+  class MachineOptions < Chef::Provisioning::MachineOptions
     # @return [String] Storage account name.
     attr_accessor :storage_account_name
 
@@ -33,7 +35,7 @@ module ChefMetalAzure
     # Defaults to 22
     attr_accessor :ssh_port
 
-    # @return [ChefMetalAzure::Constants::MachineSize] The Azure machine size.
+    # @return [Chef::Provisioning::AzureDriver::Constants::MachineSize] The Azure machine size.
     attr_accessor :vm_size
 
     # @return [String] Name of the affinity group being used.
@@ -55,4 +57,6 @@ module ChefMetalAzure
     end
 
   end
+end
+end
 end
