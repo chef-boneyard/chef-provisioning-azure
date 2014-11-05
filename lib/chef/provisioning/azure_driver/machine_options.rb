@@ -1,7 +1,7 @@
 require 'chef/provisioning/machine_options'
 require 'chef/provisioning/azure_driver/constants'
 
-# Chef Metal Azure driver
+# Chef Provisioning Azure driver
 class Chef
 module Provisioning
 module AzureDriver

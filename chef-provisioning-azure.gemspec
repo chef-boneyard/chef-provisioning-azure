@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version = Chef::Provisioning::AzureDriver::VERSION
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = %w(README.md LICENSE)
-  s.summary = 'Provisioner for creating Azure things in Chef Metal.'
+  s.summary = 'Provisioner for creating Azure things in Chef Provisioning.'
   s.description = s.summary
   s.author = 'John Ewart'
   s.email = 'jewart@getchef.com'

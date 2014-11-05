@@ -1,4 +1,4 @@
-# Chef Metal Azure driver
+# Chef Provisioning Azure driver
 class Chef
 module Provisioning
 module AzureDriver
