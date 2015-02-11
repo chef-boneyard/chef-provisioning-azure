@@ -4,14 +4,6 @@
 
 Implementation of an Azure driver that relies on the Azure SDK. 
 
-This is not quite ready for public consumption and is under active
-development.
-
-
-## DO NOT USE THIS FOR ANYTHING IMPORTANT
-
-At least not yet, you have been warned :grin:
-
 
 ## What does it do?
 

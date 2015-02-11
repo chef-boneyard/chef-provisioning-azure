@@ -2,7 +2,7 @@
 class Chef
 module Provisioning
 module AzureDriver
-  VERSION = '0.1'
+  VERSION = '0.2'
 end
 end
 end
