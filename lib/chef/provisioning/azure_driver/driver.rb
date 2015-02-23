@@ -84,32 +84,25 @@ module AzureDriver
 
       Chef::Log.debug "Azure bootstrap options: #{bootstrap_options.inspect}"
       
-      # If the cloud service exists already, need to add a role to it - otherwise create virtual machine (including cloud service)
-      cloud_service = azure_cloud_service_service.get_cloud_service(bootstrap_options[:cloud_service_name])
-
-      if cloud_service
-        action_handler.report_progress "Cloud Service #{bootstrap_options[:cloud_service_name]} already exists, adding role."
-        params = {
+      params = {
           vm_name: machine_spec.name,
           vm_user: default_ssh_username,
           image: image_id,
           # This is only until SSH keys are added
           password: machine_options[:password],
+          location: location,
           cloud_service_name: bootstrap_options[:cloud_service_name]
-        }
+      }
 
+      # If the cloud service exists already, need to add a role to it - otherwise create virtual machine (including cloud service)
+      cloud_service = azure_cloud_service_service.get_cloud_service(bootstrap_options[:cloud_service_name])
+      existing_deployment = azure_vm_service.list_virtual_machines(bootstrap_options[:cloud_service_name]).any?
+
+      if cloud_service and existing_deployment
+        action_handler.report_progress "Cloud Service #{bootstrap_options[:cloud_service_name]} already exists, adding role."
         action_handler.report_progress "Creating #{machine_spec.name} with image #{image_id} in #{bootstrap_options[:cloud_service_name]}..."
         vm = azure_vm_service.add_role(params, bootstrap_options)
       else
-        params = {
-          vm_name: machine_spec.name,
-          vm_user: default_ssh_username,
-          image: image_id,
-          # This is only until SSH keys are added
-          password: machine_options[:password],
-          location: location
-        }
-
         action_handler.report_progress "Creating #{machine_spec.name} with image #{image_id} in #{location}..."
         vm = azure_vm_service.create_virtual_machine(params, bootstrap_options)
       end
