@@ -40,6 +40,9 @@ end
 ## Currently untested/Known issues
  * Windows/WinRM bootstrap
  * Load-balanced sets
+ * Availability sets/Fault domains
+ * Cloud Service autoscaling
+ * Endpoint monitoring
  * Additional disk volumes
  * Affinity groups
  * Direct server return IP addresses
