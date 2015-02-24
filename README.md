@@ -2,8 +2,7 @@
 
 # chef-provisioning-azure
 
-Implementation of an Azure driver that relies on the Azure SDK. 
-
+Implementation of an Azure driver that relies on the Azure SDK for Ruby. 
 
 ## What does it do?
 
@@ -17,8 +16,9 @@ machine_options = {
     :bootstrap_options => {
       :cloud_service_name => 'chefprovisioning',
       :storage_account_name => 'chefprovisioning',
-      #:vm_size => "A7"
-      :location => 'West US'
+      :vm_size => "Standard_D1"
+      :location => 'West US',
+      :tcp_endpoints => '80:80'
     },
     #:image_id => 'foobar'
     # Until SSH keys are supported (soon)
@@ -30,8 +30,26 @@ machine 'toad' do
 end
 ```
  
-That's it. No images, nothing else. Do not expect much just yet. Currently you have to specify the 
-password you want the initial user to have in your recipe. No, this will not be for very long. 
+## Supported Features
+ * Automatic creation and teardown of Cloud Services
+ * Public (OS) images and captured User (VM) images 
+ * Up to date (February 2015) VM sizes including 'D', 'DS' and 'G' sizes.
+ * Custom TCP/UDP endpoints per VM role
+ * Linux VMs, SSH external bootstrap via public port
+
+## Currently untested/Known issues
+ * Windows/WinRM bootstrap
+ * Load-balanced sets
+ * Additional disk volumes
+ * Affinity groups
+ * Direct server return IP addresses
+ * Reserved/Static IP addresses
+ * Virtual network allocation
+ * Bootstrap via internal (private) addresses
+ * CDN/TrafficManager
+ * Non-IaaS Azure services (e.g CDN/TrafficManager Service Bus, Azure SQL Database, Media Services, Redis Cache)
+
+Currently you have to specify the password you want the initial user to have in your recipe. No, this will not be for very long.
 
 ### Setting your credentials
 
