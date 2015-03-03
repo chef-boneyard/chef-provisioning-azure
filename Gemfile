@@ -2,4 +2,4 @@ source 'https://rubygems.org'
 gemfile
 gemspec
 
-gem 'azure', github: 'stuartpreston/azure-sdk-for-ruby'
+gem 'stuartpreston-azure-sdk-for-ruby', '~> 0.6.5'
