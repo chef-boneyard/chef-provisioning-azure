@@ -1,4 +1,4 @@
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/opscode/chef-provisioning?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/chef/chef-provisioning?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # chef-provisioning-azure
 
@@ -14,15 +14,15 @@ with_driver 'azure'
 
 machine_options = {
     :bootstrap_options => {
-      :cloud_service_name => 'chefprovisioning',
-      :storage_account_name => 'chefprovisioning',
-      :vm_size => "Standard_D1"
-      :location => 'West US',
-      :tcp_endpoints => '80:80'
+      :cloud_service_name => 'chefprovisioning', #required
+      :storage_account_name => 'chefprovisioning', #required
+      :vm_size => "Standard_D1", #required
+      :location => 'West US', #required
+      :tcp_endpoints => '80:80' #optional
     },
-    #:image_id => 'foobar'
+    :image_id => 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_1-LTS-amd64-server-20140927-en-us-30GB', #required
     # Until SSH keys are supported (soon)
-    :password => "chefm3t4l\\m/"
+    :password => "chefm3t4l\\m/" #required
 }
 
 machine 'toad' do
