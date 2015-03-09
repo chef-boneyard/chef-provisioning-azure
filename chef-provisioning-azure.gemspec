@@ -10,11 +10,11 @@ Gem::Specification.new do |s|
   s.description = s.summary
   s.author = 'John Ewart'
   s.email = 'jewart@getchef.com'
-  s.homepage = 'https://github.com/opscode/chef-provisioning-azure'
+  s.homepage = 'https://github.com/chef/chef-provisioning-azure'
 
   s.add_dependency 'chef'
   s.add_dependency 'chef-provisioning', '~> 0.9'
-  s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '0.6.5'
+  s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '~> 0.6.6'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'

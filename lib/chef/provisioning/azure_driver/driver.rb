@@ -2,8 +2,10 @@ require 'chef/mixin/shell_out'
 require 'chef/provisioning/driver'
 require 'chef/provisioning/convergence_strategy/install_cached'
 require 'chef/provisioning/convergence_strategy/install_sh'
+require 'chef/provisioning/convergence_strategy/install_msi'
 require 'chef/provisioning/convergence_strategy/no_converge'
 require 'chef/provisioning/transport/ssh'
+require 'chef/provisioning/transport/winrm'
 require 'chef/provisioning/machine/windows_machine'
 require 'chef/provisioning/machine/unix_machine'
 require 'chef/provisioning/machine_spec'
@@ -86,7 +88,7 @@ module AzureDriver
       
       params = {
           vm_name: machine_spec.name,
-          vm_user: default_ssh_username,
+          vm_user: bootstrap_options[:vm_user] || default_ssh_username,
           image: image_id,
           # This is only until SSH keys are added
           password: machine_options[:password],
@@ -108,6 +110,7 @@ module AzureDriver
       end
 
       machine_spec.location['vm_name'] = vm.vm_name
+      machine_spec.location['is_windows'] = (true if vm.os_type == 'Windows') || false
       action_handler.report_progress "Created #{vm.vm_name} in #{location}..."      
     end
 
@@ -189,8 +192,11 @@ module AzureDriver
     end
 
     def transport_for(machine_spec, machine_options, vm)
-      # TODO winrm
-      create_ssh_transport(machine_spec, machine_options, vm)
+      if machine_spec.location['is_windows']
+        create_winrm_transport(machine_spec, machine_options, vm)
+      else
+        create_ssh_transport(machine_spec, machine_options, vm)
+      end
     end
 
     def azure_credentials
@@ -241,6 +247,50 @@ module AzureDriver
       options[:ssh_gateway] ||= machine_spec.location['ssh_gateway']
 
       Chef::Provisioning::Transport::SSH.new(remote_host, username, ssh_options, options, config)
+    end
+
+    def create_winrm_transport(machine_spec, machine_options, instance)
+      winrm_transport_options = machine_options[:bootstrap_options][:winrm_transport]
+      shared_winrm_options = {
+          :user => machine_options[:vm_user] || 'localadmin',
+          :pass => machine_options[:password] # TODO: Replace with encryption
+      }
+
+      if(winrm_transport_options['https'])
+        tcp_endpoint = instance.tcp_endpoints.select { |tcp| tcp[:name] == 'PowerShell' }.first
+        remote_host = tcp_endpoint[:vip]
+        port = tcp_endpoint[:public_port] || default_winrm_https_port
+        endpoint = "https://#{remote_host}:#{port}/wsman"
+        type = :ssl
+        winrm_options = {
+          :disable_sspi => winrm_transport_options['https'][:disable_sspi] || false, # default to Negotiate
+          :basic_auth_only => winrm_transport_options['https'][:basic_auth_only] || false, # disallow Basic auth by default
+          :no_ssl_peer_verification => winrm_transport_options['https'][:no_ssl_peer_verification] || false #disallow MITM potential by default
+        }
+      end
+
+      if(winrm_transport_options['http'])
+        tcp_endpoint = instance.tcp_endpoints.select { |tcp| tcp[:name] == 'WinRm-Http' }.first
+        remote_host = tcp_endpoint[:vip]
+        port = tcp_endpoint[:public_port] || default_winrm_http_port
+        endpoint = "http://#{remote_host}:#{port}/wsman"
+        type = :plaintext
+        winrm_options = {
+          :disable_sspi => winrm_transport_options['http']['disable_sspi'] || false, # default to Negotiate
+          :basic_auth_only => winrm_transport_options['http']['basic_auth_only'] || false # disallow Basic auth by default
+        }
+      end 
+
+      merged_winrm_options = winrm_options.merge(shared_winrm_options)
+      Chef::Provisioning::Transport::WinRM.new("#{endpoint}", type, merged_winrm_options, {})
+    end
+
+    def default_winrm_http_port
+      5985
+    end
+
+    def default_winrm_https_port
+      5986
     end
 
     def convergence_strategy_for(machine_spec, machine_options)
