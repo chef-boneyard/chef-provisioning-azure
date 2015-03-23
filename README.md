@@ -18,7 +18,7 @@ machine_options = {
     :bootstrap_options => {
       :cloud_service_name => 'chefprovisioning', #required
       :storage_account_name => 'chefprovisioning', #required
-      :vm_size => "Standard_D1", #required
+      :vm_size => "Small", #required #Case sensitive
       :location => 'West US', #required
       :tcp_endpoints => '80:80' #optional
     },
@@ -89,6 +89,9 @@ end
 Currently you have to specify the password you want the initial user to have in your recipe. No, this will not be for very long.
 
 ### Setting your credentials
+Download the Azure credential file from here: https://manage.windowsazure.com/publishsettings/index?client=xplat  
+`subscription_id` is located in the downloaded file's `subscription id` field  
+See [knife-azure](https://github.com/chef/knife-azure#configuration) plugin's config section for more info on converting between formats  
 
 Put the right values in ~/.azure/config so that it looks like the following:
 
