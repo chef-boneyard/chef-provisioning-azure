@@ -1,1 +1,5 @@
 .yardoc
+Gemfile.lock
+docs/clients
+docs/nodes
+pkg
