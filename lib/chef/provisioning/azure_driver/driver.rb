@@ -11,7 +11,7 @@ require 'chef/provisioning/machine/unix_machine'
 require 'chef/provisioning/machine_spec'
 
 require 'chef/provisioning/azure_driver/version'
-require 'chef/provisioning/azure_driver/credentials'
+require 'chef/provisioning/azure_driver/subscriptions'
 
 require 'yaml'
 require 'azure'
@@ -26,31 +26,42 @@ module AzureDriver
     # Construct an AzureDriver object from a URL - used to parse existing URL
     # data to hydrate a driver object.
     # URL scheme:
-    # azure:account_id:region
+    # azure:subscription_id
     # @return [AzureDriver] A chef-provisioning Azure driver object for the given URL
     def self.from_url(driver_url, config)
       Driver.new(driver_url, config)
     end
 
+    def self.canonicalize_url(driver_url, config)
+      scheme, account_id = driver_url.split(':', 2)
+      if account_id.nil? || account_id.empty?
+        subscription = Subscriptions.default_subscription(config)
+        if !subscription
+          raise "Driver #{driver_url} did not specify a subscription ID, and no default subscription was found.  Have you downloaded the Azure CLI and used `azure account download` and `azure account import` to set up Azure?  Alternately, you can set azure_subscriptions to [ { subscription_id: '...', management_credentials: ... }] in your Chef configuration."
+        end
+        config = Cheffish::MergedConfig.new({ azure_subscriptions: subscription }, config)
+      end
+      [ "#{scheme}:#{subscription[:subscription_id]}", config ]
+    end
+
     def initialize(driver_url, config)
       super
-      # TODO: load a specific one if requested by driver config
-      credentials = azure_credentials.default
-      default_endpoint = 'https://management.core.windows.net'
+      scheme, subscription_id = driver_url.split(':', 2)
+      @subscription = Subscriptions.get_subscription(config, subscription_id)
+      if !subscription
+        raise "Driver #{driver_url} has a subscription ID, but the system has no credentials configured for it!  If you have access to this subscription, you can use `azure account download` and `azure account import` in the Azure CLI to get the credentials, or set azure_subscriptions to [ { subscription_id: '...', management_credentials: ... }] in your Chef configuration."
+      end
+
+      # TODO make this instantiable so we can have multiple drivers ......
       Azure.configure do |azure|
         # Configure these 3 properties to use Storage
-        azure.management_certificate = credentials[:management_certificate]
-        azure.subscription_id        = credentials[:subscription_id]
-        azure.management_endpoint    = credentials[:management_endpoint] || default_endpoint
+        azure.management_certificate = subscription[:management_certificate]
+        azure.subscription_id        = subscription[:subscription_id]
+        azure.management_endpoint    = subscription[:management_endpoint]
       end
     end
 
-    # Take a URL and split it into the appropriate parts of [URL, config]
-    # @return [String, Hash] A 2-element array of [URL, config]
-    def self.canonicalize_url(driver_url, config)
-      url = driver_url.split(':')[0]
-      ["azure:#{url}", config]
-    end
+    attr_reader :subscription
 
     # -- Machine methods --
 
@@ -197,21 +208,6 @@ module AzureDriver
       else
         create_ssh_transport(machine_spec, machine_options, vm)
       end
-    end
-
-    def azure_credentials
-      # Grab the list of possible credentials
-      @azure_credentials ||= if driver_options[:azure_credentials]
-                               driver_options[:azure_credentials]
-                             else
-                               credentials = Credentials.new
-                               if driver_options[:azure_config_file]
-                                 credentials.load_ini(driver_options.delete(:azure_config_file))
-                               else
-                                 credentials.load_default
-                               end
-                               credentials
-                             end
     end
 
     def default_image_for_location(location)
