@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'chef'
   s.add_dependency 'chef-provisioning', '~> 0.9'
-  s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '~> 0.6.7'
+  s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '~> 0.6.9'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'
