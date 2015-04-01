@@ -1,6 +1,3 @@
 .yardoc
 Gemfile.lock
 Gemfile.local
-docs/clients
-docs/nodes
-pkg

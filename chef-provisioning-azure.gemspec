@@ -6,11 +6,14 @@ Gem::Specification.new do |s|
   s.version = Chef::Provisioning::AzureDriver::VERSION
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = %w(README.md LICENSE)
-  s.summary = 'Provisioner for creating Azure things in Chef Provisioning.'
-  s.description = s.summary
+  s.summary = 'Provisioner for creating Microsoft Azure resources using ' \
+    'Chef Provisioning.'
+  s.description = 'This is a driver that works with chef-provisioning that' \
+    'allows Chef Provisioning to manage objects in Microsoft Azure.'
   s.author = 'John Ewart'
   s.email = 'jewart@getchef.com'
   s.homepage = 'https://github.com/chef/chef-provisioning-azure'
+  s.license = 'Apache-2.0'
 
   s.add_dependency 'chef'
   s.add_dependency 'chef-provisioning', '~> 0.9'

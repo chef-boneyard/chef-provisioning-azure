@@ -1,10 +1,9 @@
-require 'chef/provisioning/azure_driver'
 with_driver 'azure'
 
 machine_options = {
   bootstrap_options: {
-    cloud_service_name: 'chefprovisioningtoo',
-    storage_account_name: 'vmnamestorageurblc',
+    cloud_service_name: 'jkeisercloudtest',
+    storage_account_name: 'jkeiserstorage',
     #:vm_size => "A7"
     location: 'West US'
   },
