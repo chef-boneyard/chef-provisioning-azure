@@ -72,9 +72,9 @@ azure_subscriptions [
   {
     subscription_id: '9141ca47-b2fc-444d-f420-bc858ef32f14',
     subscription_name: 'The MSDN Account I Promise I Love Just As Much As My Very Bestest MSDN Account',
-    management_credentials: '~/Downloads/mypdx.pdx'
+    management_credentials: '~/Downloads/mypdx.pfx'
   },
-  { publish_settings: '~/Downloads/MyAccount.publish_settings' },
+  { publish_settings: '~/Downloads/MyAccount.publishsettings' },
   { azure_profile: '~/.azure/azureProfile.json' }
 ]
 ```
@@ -89,7 +89,7 @@ Key                           | Description
 `management_certificate`      | The path to the actual credentials, or an IO object (optional; if this is not set, the keychain will be searched).
 `management_endpoint`         | The management endpoint URL (optional; if not set, the default Azure endpoint will be used).
 `is_default`                  | If `true`, this should be considered the default subscription.
-`publishsettings`             | The path/glob to one or more `.publishsettings` formatted files, or an IO ject, or a hash with one or more { type: <path|io> } keys, where type=:pem, :pdx or :cert.
+`publishsettings`             | The path/glob to one or more `.publishsettings` formatted files, or an IO ject, or a hash with one or more { type: <path&#124;io> } keys, where type=:pem, :pfx or :cert.
 `azure_profile`               | The path/glob to one or more `azureProfile.json` formatted files, or an IO object, or a Hash representing the parsed data.
 `allow_missing_file`          | If `true`, provisioning will skip the publishsettings or azure_profile if it does not exist; otherwise it will raise an error on missing file.  Defaults to `false`.
 
@@ -125,12 +125,4 @@ azure account download
 azure account import <downloaded filename>
 ```
 
-Or
-
-```bash
-azure login
-```
-
 If you have multiple accounts (subscriptions), you can choose the default using `azure account set <name>`.  We will pick the same default you have configured in the command line.
-
-NOTE: if you logged in using `azure account login`

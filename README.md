@@ -2,7 +2,7 @@
 
 # chef-provisioning-azure
 
-Implementation of an Azure driver that relies on the Azure SDK for Ruby. 
+This is an implementation of an Microsoft Azure driver for [chef-provisioning](/chef/chef-provisioning) that relies on [azure-sdk-for-ruby](https://github.com/stuartpreston/stuartpreston-azure-sdk-for-ruby) and the Azure Service Management API.
 
 ## What does it do?
 
@@ -46,11 +46,11 @@ machine_options = {
       :cloud_service_name => 'chefprovisioning', #required
       :storage_account_name => 'chefprovisioning', #required
       :vm_size => 'Standard_D1', #optional
-      :location => 'West US', #optional 
+      :location => 'West US', #optional
       :tcp_endpoints => '3389:3389', #optional
       :winrm_transport => { #optional
         'https' => { #required (valid values: 'http', 'https')
-          :disable_sspi => false, #optional, (default: false) 
+          :disable_sspi => false, #optional, (default: false)
           :basic_auth_only => false, #optional, (default: false)
           :no_ssl_peer_verification => true #optional, (default: false)
         }
@@ -64,10 +64,10 @@ machine 'toad' do
   machine_options machine_options
 end
 ```
- 
+
 ## Supported Features
  * Automatic creation and teardown of Cloud Services
- * Public (OS) images and captured User (VM) images 
+ * Public (OS) images and captured User (VM) images
  * Up to date (March 2015) VM sizes including 'D', 'DS', 'G', A10/A11 sizes.
  * Custom TCP/UDP endpoints per VM role
  * Linux VMs, SSH external bootstrap via cloud service endpoint
@@ -88,7 +88,21 @@ end
 
 Currently you have to specify the password you want the initial user to have in your recipe. No, this will not be for very long.
 
-### Setting your credentials
+## Getting started
+
+The gem is installed into Chef's default Ruby via RubyGems:
+
+```
+chef gem install chef-provisioning-azure
+```
+
+### Setting your credentials (v0.3 and above)
+
+ * If you have previously connected to your Azure subscription using the [azure-cli](http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-command-line-tools/) tools and imported your publishsettings, **you do not need to do anything else** the driver will read your profile information and certificates from ~/.azure/azureProfile.json
+ * Alternatively, we support any of the methods listed in [configuration](docs/configuration.md) to set the driver up with access to your subscription
+ * Note that the use of ~/.azure/config to configure the driver is **no longer supported**.
+
+### Setting your credentials (v0.2.1 and below)
 
 Put the right values in ~/.azure/config so that it looks like the following:
 
@@ -100,7 +114,7 @@ subscription_id = "YOUR_SUBSCRIPTION_ID"
 
 If you need to generate a certificate for Azure on OSX / Linux you can do it with the following:
 
-```shell 
+```shell
 openssl req \
   -x509 -nodes -days 365 \
   -newkey rsa:1024 -keyout azure.pem -out azure.pem
