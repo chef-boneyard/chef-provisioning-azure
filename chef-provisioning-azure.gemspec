@@ -8,15 +8,15 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.md LICENSE)
   s.summary = 'Provisioner for creating Microsoft Azure resources using ' \
     'Chef Provisioning.'
-  s.description = 'This is a driver that works with chef-provisioning that' \
+  s.description = 'This is a driver that works with chef-provisioning that ' \
     'allows Chef Provisioning to manage objects in Microsoft Azure.'
   s.author = 'John Ewart'
   s.email = 'jewart@getchef.com'
   s.homepage = 'https://github.com/chef/chef-provisioning-azure'
   s.license = 'Apache-2.0'
 
-  s.add_dependency 'chef'
-  s.add_dependency 'chef-provisioning', '~> 0.9'
+  s.add_dependency 'chef', '>= 12.0'
+  s.add_dependency 'chef-provisioning', '~> 1.0'
   s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '~> 0.6.9'
 
   s.add_development_dependency 'rspec'

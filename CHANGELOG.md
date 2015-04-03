@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2015-04-02)
+
+- Fix second converge issues, support chef-provisioning 1.0
+
 ## 0.3 (2015-04-01)
 
 - (BREAKING) No longer use .azure/config for configuration [(docs/configuration.md)](docs/configuration.md) (@jkeiser)
