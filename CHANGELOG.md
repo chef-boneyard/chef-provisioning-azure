@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2 (2015-04-03)
+
+- Updated dependencies on Azure SDK, compatibility with chef-client 12.2.1
+
 ## 0.3.1 (2015-04-02)
 
 - Fix second converge issues, support chef-provisioning 1.0
