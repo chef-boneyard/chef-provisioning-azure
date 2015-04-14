@@ -8,7 +8,7 @@ class Chef
         sms = Azure::StorageManagementService.new
         sms.create_storage_account(new_resource.name, new_resource.options)
         properties = sms.get_storage_account_properties(new_resource.name)
-        Chef::Log.info("Properties of #{new_resource.name}: #{properties.inspect}")
+        Chef::Log.debug("Properties of #{new_resource.name}: #{properties.inspect}")
       end
 
       action :destroy do

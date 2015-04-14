@@ -8,7 +8,7 @@ class Chef
         csms = Azure::CloudServiceManagementService.new
         csms.create_cloud_service(new_resource.name, new_resource.options)
         properties = csms.get_cloud_service_properties(new_resource.name)
-        Chef::Log.info("Properties of #{new_resource.name}: #{properties.inspect}")
+        Chef::Log.debug("Properties of #{new_resource.name}: #{properties.inspect}")
       end
 
       action :destroy do

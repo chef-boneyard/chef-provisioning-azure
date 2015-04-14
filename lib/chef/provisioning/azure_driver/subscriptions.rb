@@ -193,7 +193,7 @@ module Subscriptions
   def self.default_subscriptions(config)
     default_azure_profile = self.default_azure_profile(config)
     azure_publish_settings_file = Chef::Config.knife[:azure_publish_settings_file] if Chef::Config.knife
-    Chef::Log.info("No Chef::Config[:driver_options][:subscriptions] found, reading environment variables AZURE_SUBSCRIPTION_ID, AZURE_MANAGEMENT_CERTIFICATE, and AZURE_MANAGEMENT_ENDPOINT,#{azure_publish_settings_file ? " then #{azure_publish_settings_file}," : ""} and then reading #{default_azure_profile}")
+    Chef::Log.debug("No Chef::Config[:driver_options][:subscriptions] found, reading environment variables AZURE_SUBSCRIPTION_ID, AZURE_MANAGEMENT_CERTIFICATE, and AZURE_MANAGEMENT_ENDPOINT,#{azure_publish_settings_file ? " then #{azure_publish_settings_file}," : ""} and then reading #{default_azure_profile}")
     result = []
     result << {
       subscription_id:        ENV["AZURE_SUBSCRIPTION_ID"],
