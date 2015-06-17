@@ -228,7 +228,8 @@ module AzureDriver
     end
 
     def create_ssh_transport(machine_spec, machine_options, vm)
-      username = machine_spec.location['ssh_username'] || default_ssh_username
+      bootstrap_options = machine_options[:bootstrap_options] || {}
+      username = bootstrap_options[:vm_user] || default_ssh_username
       tcp_endpoint = vm.tcp_endpoints.select { |tcp| tcp[:name] == 'SSH' }.first
       remote_host = tcp_endpoint[:vip]
 
