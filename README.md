@@ -4,6 +4,8 @@
 
 This is an implementation of an Microsoft Azure driver for [chef-provisioning](/chef/chef-provisioning) that relies on [azure-sdk-for-ruby](https://github.com/stuartpreston/stuartpreston-azure-sdk-for-ruby) and the Azure Service Management API.
 
+**Please note this driver does not support Azure Resource Manager (ARM) and is therfore only able to create "classic" VM resources that sit behind a cloud service in Azure. A new driver is under development.**
+
 ## What does it do?
 
 It can provision and converge a host on Azure with a recipe like the following:
@@ -22,7 +24,7 @@ machine_options = {
       :location => 'West US', #required
       :tcp_endpoints => '80:80' #optional
     },
-    :image_id => 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_1-LTS-amd64-server-20140927-en-us-30GB', #required
+    :image_id => 'b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-14_04_2-LTS-amd64-server-20150706-en-us-30GB', #required
     # Until SSH keys are supported (soon)
     :password => "chefm3t4l\\m/" #required
 }
@@ -57,13 +59,15 @@ machine_options = {
       }
     },
     :password => 'P2ssw0rd', #required
-    :image_id => 'a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201502.01-en.us-127GB.vhd' #required
+    :image_id => 'a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201506.01-en.us-127GB.vhd' #required
 }
 
 machine 'toad' do
   machine_options machine_options
 end
 ```
+
+Note that images are not kept historically in Azure, therefore to find the latest images for your platform use the command ```azure vm image list``` to ensure the public image you require is available.
 
 ## Supported Features
  * Automatic creation and teardown of Cloud Services
@@ -73,7 +77,7 @@ end
  * Linux VMs, SSH external bootstrap via cloud service endpoint
  * Windows VMs, WinRM bootstrap via cloud service endpoint
 
-## Currently untested/Known issues
+## Unsupported/will not work
  * Load-balanced sets
  * Availability sets/Fault domains
  * Cloud Service autoscaling
@@ -86,7 +90,7 @@ end
  * Bootstrap via internal (private) addresses
  * Non-IaaS Azure services (e.g CDN/TrafficManager, Service Bus, Azure SQL Database, Media Services, Redis Cache)
 
-Currently you have to specify the password you want the initial user to have in your recipe. No, this will not be for very long.
+**This driver is no longer under active development as the creation of resources under Service Management mode in Azure is being deprecated in favour of Azure Resource Manager.**
 
 ## Getting started
 
@@ -98,30 +102,7 @@ chef gem install chef-provisioning-azure
 
 ### Setting your credentials (v0.3 and above)
 
- * If you have previously connected to your Azure subscription using the [azure-cli](http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-command-line-tools/) tools and imported your publishsettings, **you do not need to do anything else** the driver will read your profile information and certificates from ~/.azure/azureProfile.json
+ * If you have previously connected to your Azure subscription using the [azure-cli](http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-command-line-tools/) tools and imported your publishSettings (by using ```azure account download``` and ```azure account import <filename.publishSettings>```), **you do not need to do anything else** the driver will read your profile information and certificates from ~/.azure/azureProfile.json
  * Alternatively, we support any of the methods listed in [configuration](docs/configuration.md) to set the driver up with access to your subscription
  * Note that the use of ~/.azure/config to configure the driver is **no longer supported**.
 
-### Setting your credentials (v0.2.1 and below)
-
-Put the right values in ~/.azure/config so that it looks like the following:
-
-```
-[default]
-management_certificate = "/Users/YOU/.azure/azure.pem"
-subscription_id = "YOUR_SUBSCRIPTION_ID"
-```
-
-If you need to generate a certificate for Azure on OSX / Linux you can do it with the following:
-
-```shell
-openssl req \
-  -x509 -nodes -days 365 \
-  -newkey rsa:1024 -keyout azure.pem -out azure.pem
-```
-
-followed by conversion to the DER format for Azure:
-
-```shell
-openssl x509 -inform pem -in azure.pem -outform der -out azure.cer
-```
