@@ -4,7 +4,7 @@
 
 This is an implementation of an Microsoft Azure driver for [chef-provisioning](/chef/chef-provisioning) that relies on [azure-sdk-for-ruby](https://github.com/stuartpreston/stuartpreston-azure-sdk-for-ruby) and the Azure Service Management API.
 
-**Please note this driver does not support Azure Resource Manager (ARM) and is therfore only able to create "classic" VM resources that sit behind a cloud service in Azure. A new driver is under development.**
+**Please note this driver does not support Azure Resource Manager (ARM) and is therefore only able to create "classic" VM resources that sit behind a cloud service in Azure. A new driver is under development - see [chef-provisioning-azurerm](https://github.com/pendrica/chef-provisioning-azurerm).**
 
 ## What does it do?
 
