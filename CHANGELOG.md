@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 (2015-09-10)
+
+- bootstrap option :vm_user is now used as the username when bootstrapping via SSH (@plant42) 
+- Experimental support for non-managed auxilliary resources (@stuartpreston)
+
 ## 0.3.2 (2015-04-03)
 
 - Updated dependencies on Azure SDK, compatibility with chef-client 12.2.1
