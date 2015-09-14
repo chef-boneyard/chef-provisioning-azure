@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/chef/chef-provisioning-azure'
   s.license = 'Apache-2.0'
 
-  s.add_dependency 'chef', '>= 12.0'
   s.add_dependency 'chef-provisioning', '~> 1.0'
   s.add_dependency 'stuartpreston-azure-sdk-for-ruby', '~> 0.7'
 
+  s.add_development_dependency 'chef', '>= 12.0'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'yard'
