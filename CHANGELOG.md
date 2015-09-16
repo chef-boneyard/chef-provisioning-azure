@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 (2015-09-16)
+
+- Make chef a development dependency (@ksubrama)
+
 ## 0.3.3 (2015-09-10)
 
 - bootstrap option :vm_user is now used as the username when bootstrapping via SSH (@plant42) 
