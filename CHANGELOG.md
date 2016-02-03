@@ -1,7 +1,7 @@
 # Change Log
 
-## [0.4.0](https://github.com/chef/chef-provisioning-azure/tree/0.4.0) (2016-02-03)
-[Full Changelog](https://github.com/chef/chef-provisioning-azure/compare/v0.4.0...0.4.0)
+## [0.5.0](https://github.com/chef/chef-provisioning-azure/tree/0.5.0) (2016-02-03)
+[Full Changelog](https://github.com/chef/chef-provisioning-azure/compare/v0.4.0...0.5.0)
 
 **Merged pull requests:**
 
