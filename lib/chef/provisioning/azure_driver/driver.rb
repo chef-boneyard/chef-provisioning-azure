@@ -253,7 +253,7 @@ module AzureDriver
     def create_winrm_transport(machine_spec, machine_options, instance)
       winrm_transport_options = machine_options[:bootstrap_options][:winrm_transport]
       shared_winrm_options = {
-          :user => machine_options[:vm_user] || 'localadmin',
+          :user => machine_options[:bootstrap_options][:vm_user] || default_ssh_username,
           :pass => machine_options[:password] # TODO: Replace with encryption
       }
 
