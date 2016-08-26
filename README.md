@@ -1,6 +1,6 @@
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/chef/chef-provisioning?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 # chef-provisioning-azure
+
+[![Build Status](https://travis-ci.org/chef/chef-provisioning-azure.svg?branch=master)](https://travis-ci.org/chef/chef-provisioning-azure) [![Gem Version](https://badge.fury.io/rb/chef-provisioning-azure.svg)](https://badge.fury.io/rb/chef-provisioning-azure)
 
 This is an implementation of an Microsoft Azure driver for [chef-provisioning](/chef/chef-provisioning) that relies on [azure-sdk-for-ruby](https://github.com/stuartpreston/stuartpreston-azure-sdk-for-ruby) and the Azure Service Management API.
 
@@ -67,28 +67,30 @@ machine 'toad' do
 end
 ```
 
-Note that images are not kept historically in Azure, therefore to find the latest images for your platform use the command ```azure vm image list``` to ensure the public image you require is available.
+Note that images are not kept historically in Azure, therefore to find the latest images for your platform use the command `azure vm image list` to ensure the public image you require is available.
 
 ## Supported Features
- * Automatic creation and teardown of Cloud Services
- * Public (OS) images and captured User (VM) images
- * Up to date (March 2015) VM sizes including 'D', 'DS', 'G', A10/A11 sizes.
- * Custom TCP/UDP endpoints per VM role
- * Linux VMs, SSH external bootstrap via cloud service endpoint
- * Windows VMs, WinRM bootstrap via cloud service endpoint
+
+- Automatic creation and teardown of Cloud Services
+- Public (OS) images and captured User (VM) images
+- Up to date (March 2015) VM sizes including 'D', 'DS', 'G', A10/A11 sizes.
+- Custom TCP/UDP endpoints per VM role
+- Linux VMs, SSH external bootstrap via cloud service endpoint
+- Windows VMs, WinRM bootstrap via cloud service endpoint
 
 ## Unsupported/will not work
- * Load-balanced sets
- * Availability sets/Fault domains
- * Cloud Service autoscaling
- * Endpoint monitoring
- * Additional disk volumes
- * Affinity groups
- * Direct server return IP addresses
- * Reserved/Static IP addresses
- * Virtual network allocation
- * Bootstrap via internal (private) addresses
- * Non-IaaS Azure services (e.g CDN/TrafficManager, Service Bus, Azure SQL Database, Media Services, Redis Cache)
+
+- Load-balanced sets
+- Availability sets/Fault domains
+- Cloud Service autoscaling
+- Endpoint monitoring
+- Additional disk volumes
+- Affinity groups
+- Direct server return IP addresses
+- Reserved/Static IP addresses
+- Virtual network allocation
+- Bootstrap via internal (private) addresses
+- Non-IaaS Azure services (e.g CDN/TrafficManager, Service Bus, Azure SQL Database, Media Services, Redis Cache)
 
 **This driver is no longer under active development as the creation of resources under Service Management mode in Azure is being deprecated in favour of Azure Resource Manager.**
 
@@ -102,7 +104,6 @@ chef gem install chef-provisioning-azure
 
 ### Setting your credentials (v0.3 and above)
 
- * If you have previously connected to your Azure subscription using the [azure-cli](http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-command-line-tools/) tools and imported your publishSettings (by using ```azure account download``` and ```azure account import <filename.publishSettings>```), **you do not need to do anything else** the driver will read your profile information and certificates from ~/.azure/azureProfile.json
- * Alternatively, we support any of the methods listed in [configuration](docs/configuration.md) to set the driver up with access to your subscription
- * Note that the use of ~/.azure/config to configure the driver is **no longer supported**.
-
+- If you have previously connected to your Azure subscription using the [azure-cli](http://azure.microsoft.com/en-us/documentation/articles/virtual-machines-command-line-tools/) tools and imported your publishSettings (by using `azure account download` and `azure account import <filename.publishSettings>`), **you do not need to do anything else** the driver will read your profile information and certificates from ~/.azure/azureProfile.json
+- Alternatively, we support any of the methods listed in [configuration](docs/configuration.md) to set the driver up with access to your subscription
+- Note that the use of ~/.azure/config to configure the driver is **no longer supported**.
