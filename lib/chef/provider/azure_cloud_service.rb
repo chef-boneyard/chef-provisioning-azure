@@ -1,4 +1,4 @@
-require 'chef/provisioning/azure_driver/azure_provider'
+require "chef/provisioning/azure_driver/azure_provider"
 
 class Chef
   class Provider

@@ -1,4 +1,4 @@
-require 'chef/provisioning/azure_driver/azure_provider'
+require "chef/provisioning/azure_driver/azure_provider"
 
 class Chef
   class Provider
@@ -14,11 +14,11 @@ class Chef
                                         "#{new_resource.options[:location]}")
         server = properties.name
 
-        new_resource.options[:firewall_rules].each do | rule |
-          rule_name = URI::encode(rule[:name])
+        new_resource.options[:firewall_rules].each do |rule|
+          rule_name = URI.encode(rule[:name])
           range = {
             :start_ip_address => rule[:start_ip_address],
-            :end_ip_address => rule[:end_ip_address]
+            :end_ip_address => rule[:end_ip_address],
           }
           csql.set_sql_server_firewall_rule(server, rule_name, range)
         end
@@ -29,7 +29,7 @@ class Chef
 
       action :destroy do
         # not supported
-        fail "Destroy not yet implemented on Azure SQL Server using ASM."
+        raise "Destroy not yet implemented on Azure SQL Server using ASM."
       end
     end
   end

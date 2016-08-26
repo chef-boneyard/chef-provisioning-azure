@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 gemspec
 
 # If you want to customize your local install, you can add stuff to Gemfile.local, which doesn't go to git

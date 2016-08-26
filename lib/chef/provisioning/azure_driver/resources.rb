@@ -1,4 +1,4 @@
-resources = %w(storage_account cloud_service sql_server)
+resources = %w{storage_account cloud_service sql_server}
 
 resources.each do |r|
   Chef::Log.debug("Loading resource: #{r}")
