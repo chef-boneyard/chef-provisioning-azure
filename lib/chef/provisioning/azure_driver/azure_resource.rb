@@ -1,5 +1,5 @@
-require 'chef/resource/lwrp_base'
-require 'chef/provisioning/azure_driver/subscriptions'
+require "chef/resource/lwrp_base"
+require "chef/provisioning/azure_driver/subscriptions"
 
 class Chef
   module Provisioning
@@ -14,7 +14,7 @@ class Chef
           end
 
           config = run_context.chef_provisioning.config
-          scheme, account_id = driver.split(':', 2)
+          scheme, account_id = driver.split(":", 2)
 
           if account_id.nil? || account_id.empty?
             subscription = Subscriptions.default_subscription(config)
@@ -43,7 +43,7 @@ class Chef
         attribute :driver
         attribute :chef_server, kind_of: Hash
         attribute :managed_entry_store, kind_of: Chef::Provisioning::ManagedEntryStore,
-                                  lazy_default: proc { Chef::Provisioning::ChefManagedEntryStore.new(chef_server) }
+                                        lazy_default: proc { Chef::Provisioning::ChefManagedEntryStore.new(chef_server) }
         attribute :subscription
       end
     end

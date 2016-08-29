@@ -1,7 +1,7 @@
-require 'chef/provider/lwrp_base'
-require 'chef/provisioning/azure_driver/azure_resource'
-require 'chef/provisioning/chef_provider_action_handler'
-require 'azure'
+require "chef/provider/lwrp_base"
+require "chef/provisioning/azure_driver/azure_resource"
+require "chef/provisioning/chef_provider_action_handler"
+require "azure"
 
 class Chef
   module Provisioning
@@ -12,7 +12,7 @@ class Chef
         AzureResource = Chef::Provisioning::AzureDriver::AzureResource
 
         def azure_sql_management_endpoint
-          'https://management.database.windows.net:8443'
+          "https://management.database.windows.net:8443"
         end
 
         def action_handler
